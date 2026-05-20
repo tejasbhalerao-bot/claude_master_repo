@@ -9,9 +9,9 @@ Agents · Plugins · MCPs · Skills · Routing Rules.
 
 Claude Code configured as a PM + Data + Ops assistant for **Tejas Bhalerao**, Product Manager at **Truemeds** — an online pharmacy operating across Hyperlocal Forward/Reverse, Courier Forward/Reverse, B2B Forward/Reverse.
 
-Master config: `~/.claude/CLAUDE.md`
+Master config: `~/.claude/CLAUDE.md` → imports `~/Documents/claude-os/CLAUDE.md`
 
-> ⚠️ **LEGACY — DO NOT USE:** `~/Documents/claude-os/` is an old location that is out of date. Nothing in that directory should be referenced or relied on. All live skill files are in `~/pm-agent/` and `~/data-agent/`.
+> ⚠️ **LEGACY NOTE:** `~/Documents/claude-os/` is mostly legacy. Exception: Data Agent skill files (`schema-reader.md`, `raw-data-analyser.md`, etc.) still live there pending migration to `~/data-agent/`. PM Agent skills are fully migrated to `~/pm-agent/`.
 
 ---
 
@@ -47,6 +47,16 @@ All PM workflows route through `~/pm-agent/workflows/supporting/recall-and-route
 ## PM Agent — `~/pm-agent/`
 
 GitHub-backed PM workflow system. Claude loads Truemeds org context from Google Drive → creates documents → reviews them → maps objections → auto-versions → pushes to GitHub. Everything is automated — zero manual file management.
+
+**Skill file locations:**
+```
+~/pm-agent/workflows/core/          ← create-prd, design-experiment, review-prd,
+                                       map-objections, write-exec-brief,
+                                       review-experiment, design-test-cases
+~/pm-agent/workflows/supporting/    ← recall-and-route, load-context,
+                                       answer-context-questions
+~/pm-agent/changelogs/              ← read before running any skill
+```
 
 ### How to trigger
 
@@ -197,6 +207,13 @@ Versioning is automatic: v1 → v2 → v3. Claude detects existing versions and 
 ## Data Agent — `~/data-agent/`
 
 Skills for Truemeds Redshift data via Metabase, CSV/Excel analysis, and KPI monitoring.
+
+**Skill file locations:**
+```
+~/Documents/claude-os/data-agent/   ← schema-reader, raw-data-analyser,
+                                       weekly-metrics-monitor, post-release-analyser,
+                                       metrics-designer  (pending migration to ~/data-agent/)
+```
 
 **Hard rules for all data work:**
 - Always prefix Redshift tables with `tmmumpsdb.`
@@ -789,20 +806,23 @@ Off: type `stop caveman` or `normal mode`
 ## File Locations
 
 ```
-~/pm-agent/                          ← PM Agent (GitHub-backed, source of truth)
-~/pm-agent/workflows/core/           ← Core PM workflows
-~/pm-agent/workflows/supporting/     ← Context load, recall-and-route
-~/pm-agent/archives/                 ← All generated docs (auto-versioned)
-~/pm-agent/changelogs/               ← Self-learning changelogs
-~/pm-agent/scripts/                  ← commit-and-push.sh, weekly_synthesis.py
+~/pm-agent/                                  ← PM Agent (source of truth)
+~/pm-agent/workflows/core/                   ← create-prd, design-experiment, review-prd,
+                                                map-objections, write-exec-brief,
+                                                review-experiment, design-test-cases
+~/pm-agent/workflows/supporting/             ← recall-and-route, load-context,
+                                                answer-context-questions
+~/pm-agent/archives/                         ← All generated docs (auto-versioned)
+~/pm-agent/changelogs/                       ← Self-learning changelogs (read before each skill)
+~/pm-agent/scripts/                          ← commit-and-push.sh, weekly_synthesis.py
 
-~/data-agent/                        ← Data Agent (source of truth)
+~/data-agent/                                ← Data Agent home
+~/Documents/claude-os/data-agent/           ← Data skill files (pending migration)
 
-~/.claude/CLAUDE.md                  ← Master config + routing table
-~/.claude/settings.json              ← Permissions, hooks, env
-~/.claude/keybindings.json           ← Key bindings
-
-⚠️  ~/Documents/claude-os/           ← LEGACY. Out of date. Do not use.
+~/.claude/CLAUDE.md                          ← Imports ~/Documents/claude-os/CLAUDE.md
+~/Documents/claude-os/CLAUDE.md             ← Master config + routing table (live)
+~/.claude/settings.json                      ← Permissions, hooks, env
+~/.claude/keybindings.json                   ← Key bindings
 ```
 
 ---
